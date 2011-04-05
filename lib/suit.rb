@@ -1,4 +1,4 @@
-class Suit  
+class Suit
   SUIT_NAMES = [:hearts, :spades, :diamonds, :clubs]
   SUIT_ABBREVIATIONS = {
     :hearts => "H",
@@ -15,7 +15,7 @@ class Suit
 
   def self.default_suits
     SUIT_NAMES.map { |suit| Suit.new(suit) }
-  end  
+  end
 
   def initialize(suit_name)
     @suit_name = suit_name

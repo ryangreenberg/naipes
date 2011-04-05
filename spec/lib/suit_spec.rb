@@ -6,7 +6,7 @@ describe Suit do
       suit = Suit.new(:hearts)
       suit.is?(:hearts).should be_true
     end
-    
+
     it "is false when the symbol does not match the name of the suit" do
       suit = Suit.new(:hearts)
       suit.is?(:spades).should be_false
