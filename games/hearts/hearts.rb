@@ -25,8 +25,8 @@ class Hearts < Game
     @tricks = []
     while !hand_over?
       current_player = select_player_to_lead_trick
+      current_player.take_turn(self)
       # p current_player.cards
-      
     end
     # for 13 rounds (until 13 tricks have been played):
     # select_player
@@ -40,17 +40,17 @@ class Hearts < Game
     @deck = Deck.new(suits, values)
     @deck.shuffle
   end
-  
+
   def select_player_to_lead_trick
     # For the first trick, the player with the 2 of clubs leads the trick
-    # 
+    #
   end
 
   # Does it make sense to define these in a rules class?
   def game_over?
     @scores.values.any? { |score| score >= 100 }
   end
-  
+
   def hand_over?
     @tricks.length < 13
   end
