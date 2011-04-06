@@ -10,6 +10,13 @@ class CardValue
     :queen => 12,
     :king => 13
   }
+  
+  ABBREVIATION_NAMES = {
+    1 => 'A',
+    11 => 'J',
+    12 => 'Q',
+    13 => 'K'
+  }
 
   def self.default_values
     VALUES.map { |value| CardValue.new(value) }
@@ -26,6 +33,12 @@ class CardValue
 
   def ==(other)
     @value == other.value
+  end
+
+  def display(options)
+    if options[:abbreviation]
+      ABBREVIATION_NAMES.include?(@value) ? ABBREVIATION_NAMES[@value] : @value
+    end
   end
 
   def to_s

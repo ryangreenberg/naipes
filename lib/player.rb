@@ -11,6 +11,7 @@ class Player
 
   def take_turn(game)
     puts "#{@name}'s turn..."
+    puts @cards.display(:abbreviation)
     game.allowed?(:action => :draw)
   end
 end

@@ -27,4 +27,8 @@ class Deck
   def each(&block)
     @cards.each { |card| yield card }
   end
+  
+  def display(options)
+    @cards.map { |card| card.display(options) }
+  end
 end

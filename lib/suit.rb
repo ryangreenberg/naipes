@@ -1,4 +1,6 @@
 class Suit
+  attr_reader :suit_name
+
   SUIT_NAMES = [:hearts, :spades, :diamonds, :clubs]
   SUIT_ABBREVIATIONS = {
     :hearts => "H",
@@ -21,16 +23,14 @@ class Suit
     @suit_name = suit_name
   end
 
-  def is?(suit_symbol)
-    @suit_name == suit_symbol
-  end
-
   def ==(other)
     @suit_name == other.suit_name
   end
 
-  def to_visual_symbol
-    SUIT_SYMBOLS[@suit_name]
+  def display(options)
+    if options[:abbreviation]
+      SUIT_SYMBOLS[@suit_name]
+    end
   end
 
   def to_s
