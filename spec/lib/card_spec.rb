@@ -38,5 +38,15 @@ describe Card do
       card_b = Card.new(suit, value_b)
       card_a.should_not == card_b
     end
+    
+    it "returns false when compared card has different suit and value" do
+      suit_a = Suit.new(:hearts)
+      suit_b = Suit.new(:clubs)
+      value_a = CardValue.new(9)
+      value_b = CardValue.new(8)
+      card_a = Card.new(suit_a, value_a)
+      card_b = Card.new(suit_b, value_b)
+      card_a.should_not == card_b
+    end
   end
 end

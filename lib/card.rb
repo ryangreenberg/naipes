@@ -7,7 +7,7 @@ class Card
   end
 
   def ==(other)
-    other.suit?(@suit) == other.value?(@value)
+    other.suit?(@suit) && other.value?(@value)
   end
 
   def value?(value)
@@ -18,11 +18,11 @@ class Card
     @suit == suit
   end
 
-  def display(options)
+  def display(options = {})
     "#{@value.display(options)}#{@suit.display(options)}"
   end
 
   def to_s
-    "#{@value}#{@suit.to_visual_symbol}"
+    display({:abbreviation => true})
   end
 end
