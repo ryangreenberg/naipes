@@ -24,10 +24,18 @@ class Deck
   alias size length
   alias count length
 
+  def add(cards)
+    if cards.is_a?(Card)
+      @cards << cards
+    else
+      @cards = @cards.concat(cards)
+    end
+  end
+
   def each(&block)
     @cards.each { |card| yield card }
   end
-  
+
   def display(options)
     @cards.map { |card| card.display(options) }
   end

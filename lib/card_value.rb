@@ -10,7 +10,7 @@ class CardValue
     :queen => 12,
     :king => 13
   }
-  
+
   ABBREVIATION_NAMES = {
     1 => 'A',
     11 => 'J',

@@ -29,7 +29,7 @@ class Suit
 
   def display(options)
     if options[:abbreviation]
-      SUIT_SYMBOLS[@suit_name]
+      SUIT_ABBREVIATIONS[@suit_name]
     end
   end
 
