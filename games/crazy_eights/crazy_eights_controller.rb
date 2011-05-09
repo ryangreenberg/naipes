@@ -1,43 +1,45 @@
-class CrazyEights < Game
-
-  STARTING_NUMBER_OF_CARDS = 8
-  WILD_CARD = CardValue.new(8)
-
-  def can_start?
-    @players.size > 1
+class CrazyEightsController < GameController
+  def make_move(player, move)
+    @game.move(player, move)
   end
+end
 
-  def start
+  def play
     deal
-    changed
-    notify(:action => :turn, :player => current_player)
-  end
 
-  def current_player
-    @players.first
-  end
-  
-  def winner
-  end
-  
-  def top_card
-    @discard.last
+    while true
+      @players.each do |player|
+        decision = player.take_turn(self)
+        handle_decision(player, decision)
+
+        if game_over?
+          @winner = player
+          break
+        end
+
+        puts "#{player.name} has #{player.cards.size} cards: #{player.cards.join(', ')}"
+
+        # wait = STDIN.gets
+      end
+      break if @winner
+    end
+
+    puts "Game over! #{@winner.name} was the winner!"
   end
 
   def handle_decision(player, decision)
     if decision[:action] == :draw
       puts "#{player.name} is drawing a card..."
       player.draw(@deck)
-      notify(:action => :draw, :player => player, :card => player.cards.last)
-      
       reshuffle_discard if @deck.size == 0
     elsif decision[:action] == :play
+      puts "#{player.name} plays #{decision[:card]}..."
       played_card = player.remove(decision[:card])
       @discard << played_card
-      notify(:action => :play, :player => player, :card => played_card)
 
       if played_card.value?(WILD_CARD)
-        notify(:action => :choose_suit, :player => player)
+        decision = player.choose_suit(self)
+        handle_decision(player, decision)
       else
         @wild_card_suit = nil
       end
@@ -45,15 +47,7 @@ class CrazyEights < Game
     elsif decision[:action] == :choose_suit
       puts "#{player.name} choose #{decision[:suit]} as the suit..."
       @wild_card_suit = decision[:suit]
-      notify(:action => :suit_change, :suit => decision[:suit])
     end
-    
-    next_player
-  end
-  
-  def next_player
-    @players.push(@players.shift)
-    notify(:action => :turn, :player => current_player)
   end
 
   # class Action
@@ -66,16 +60,12 @@ class CrazyEights < Game
   #   [:draw, :play]
   # end
 
-  def allowed?(player, decision)
+  def allowed?(decision)
     if decision[:action] == :draw
       true
     elsif decision[:action] == :play
       card = decision[:card]
-      if player.cards.include?(card)
-        card.value?(WILD_CARD) || card.suit?(suit_at_top_of_discard_pile) || card.value?(value_at_top_of_discard_pile)
-      else
-        false
-      end
+      card.value?(WILD_CARD) || card.suit?(suit_at_top_of_discard_pile) || card.value?(value_at_top_of_discard_pile)
     else
       false
     end
@@ -95,19 +85,15 @@ class CrazyEights < Game
 
   def deal
     @deck.shuffle
-    changed
-    notify(:shuffle)
 
     STARTING_NUMBER_OF_CARDS.times do
       @players.each do |player|
         player.draw(@deck)
-        changed
-        notify(:action => :draw, :player => player, :card => player.cards.last)
       end
     end
 
     @discard = [ @deck.draw ]
-    notify(:flip)
+    puts "#{@discard[0]} is the first card..."
   end
 
   def reshuffle_discard
@@ -116,7 +102,5 @@ class CrazyEights < Game
     @deck.add(@discard)
     @deck.shuffle
     @discard = [ saved_card ]
-    changed
-    notify(:shuffle)
   end
 end

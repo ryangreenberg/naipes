@@ -42,4 +42,8 @@ class Player
       {:action => :draw}
     end
   end
+  
+  def to_s
+    @name
+  end
 end

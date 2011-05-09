@@ -26,6 +26,10 @@ class Suit
   def ==(other)
     @suit_name == other.suit_name
   end
+  
+  def <=>(other)
+    SUIT_NAMES.find_index(@suit_name) <=> SUIT_NAMES.find_index(other.suit_name)
+  end
 
   def display(options)
     if options[:abbreviation]
